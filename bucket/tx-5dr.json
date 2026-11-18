@@ -20,18 +20,6 @@
             "hash": "849cf3f1b09489360a9a8c84710428bd38ba7c0a9b370c6aa54b6e9e7ac76fc9"
         }
     },
-    "post_install": [
-        "@(",
-        "    '@echo off'",
-        "    'setlocal DisableDelayedExpansion'",
-        "    'set \"APP_PERSIST=%~dp0data\"'",
-        "    'set \"TEMP=%APP_PERSIST%\\temp\"'",
-        "    'set \"TMP=%TEMP%\"'",
-        "    'if not exist \"%TEMP%\\\" mkdir \"%TEMP%\" || exit /b 1'",
-        "    'if not exist \"%APP_PERSIST%\\profile\\\" mkdir \"%APP_PERSIST%\\profile\" || exit /b 1'",
-        "    'start \"\" /D \"%~dp0.\" \"%~dp0tx-5dr.exe\" --user-data-dir=\"%APP_PERSIST%\\profile\" --disk-cache-dir=\"%APP_PERSIST%\\cache\" %*'",
-        ") | Set-Content -LiteralPath (Join-Path $dir 'launch.cmd') -Encoding Ascii"
-    ],
     "persist": "data",
     "shortcuts": [
         [
@@ -43,5 +31,19 @@
     ],
     "notes": [
         "Use the Scoop shortcut to direct Electron user data, browser cache and temporary files to persist."
-    ]
+    ],
+    "installer": {
+        "script": [
+            "@(",
+            "    '@echo off'",
+            "    'setlocal DisableDelayedExpansion'",
+            "    'set \"APP_PERSIST=%~dp0data\"'",
+            "    'set \"TEMP=%APP_PERSIST%\\temp\"'",
+            "    'set \"TMP=%TEMP%\"'",
+            "    'if not exist \"%TEMP%\\\" mkdir \"%TEMP%\" || exit /b 1'",
+            "    'if not exist \"%APP_PERSIST%\\profile\\\" mkdir \"%APP_PERSIST%\\profile\" || exit /b 1'",
+            "    'start \"\" /D \"%~dp0.\" \"%~dp0tx-5dr.exe\" --user-data-dir=\"%APP_PERSIST%\\profile\" --disk-cache-dir=\"%APP_PERSIST%\\cache\" %*'",
+            ") | Set-Content -LiteralPath (Join-Path $dir 'launch.cmd') -Encoding Ascii"
+        ]
+    }
 }
