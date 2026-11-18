@@ -1,0 +1,29 @@
+{
+  "version": "1.0.1",
+  "description": "Amateur radio digital modes desktop application.",
+  "homepage": "https://github.com/boybook/tx-5dr",
+  "checkver": {
+    "regex": "^v([\\d.]+)$",
+    "jsonpath": "$.tag_name",
+    "url": "https://api.github.com/repos/boybook/tx-5dr/releases/latest"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/boybook/tx-5dr/releases/download/v$version/TX-5DR-v$version-windows-x64.zip"
+      }
+    }
+  },
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/boybook/tx-5dr/releases/download/v1.0.1/TX-5DR-v1.0.1-windows-x64.zip",
+      "hash": "849cf3f1b09489360a9a8c84710428bd38ba7c0a9b370c6aa54b6e9e7ac76fc9",
+      "shortcuts": [
+        [
+          "tx-5dr.exe",
+          "TX-5DR"
+        ]
+      ]
+    }
+  }
+}
