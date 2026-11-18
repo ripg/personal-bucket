@@ -29,18 +29,6 @@
             "extract_dir": "qFT8"
         }
     },
-    "post_install": [
-        "@(",
-        "    '@echo off'",
-        "    'setlocal DisableDelayedExpansion'",
-        "    'set \"APP_PERSIST=%~dp0data\"'",
-        "    'set \"TEMP=%APP_PERSIST%\\temp\"'",
-        "    'set \"TMP=%TEMP%\"'",
-        "    'if not exist \"%TEMP%\\\" mkdir \"%TEMP%\" || exit /b 1'",
-        "    'if not exist \"%APP_PERSIST%\\profile\\\" mkdir \"%APP_PERSIST%\\profile\" || exit /b 1'",
-        "    'start \"\" /D \"%~dp0.\" \"%~dp0qFT8.exe\" --qft8_profile \"%APP_PERSIST%\\profile\" %*'",
-        ") | Set-Content -LiteralPath (Join-Path $dir 'launch.cmd') -Encoding Ascii"
-    ],
     "persist": "data",
     "shortcuts": [
         [
@@ -53,5 +41,19 @@
     "notes": [
         "Use the Scoop shortcut to store the qFT8 profile and temporary files under persist.",
         "qFT8 can save SSTV and other images in Windows Pictures. Choose locations under persist when exporting files."
-    ]
+    ],
+    "installer": {
+        "script": [
+            "@(",
+            "    '@echo off'",
+            "    'setlocal DisableDelayedExpansion'",
+            "    'set \"APP_PERSIST=%~dp0data\"'",
+            "    'set \"TEMP=%APP_PERSIST%\\temp\"'",
+            "    'set \"TMP=%TEMP%\"'",
+            "    'if not exist \"%TEMP%\\\" mkdir \"%TEMP%\" || exit /b 1'",
+            "    'if not exist \"%APP_PERSIST%\\profile\\\" mkdir \"%APP_PERSIST%\\profile\" || exit /b 1'",
+            "    'start \"\" /D \"%~dp0.\" \"%~dp0qFT8.exe\" --qft8_profile \"%APP_PERSIST%\\profile\" %*'",
+            ") | Set-Content -LiteralPath (Join-Path $dir 'launch.cmd') -Encoding Ascii"
+        ]
+    }
 }
