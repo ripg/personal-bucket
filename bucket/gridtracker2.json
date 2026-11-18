@@ -1,0 +1,31 @@
+{
+  "version": "2.261108.4",
+  "description": "Amateur radio grid mapping and logging companion for WSJT-X and JTDX.",
+  "homepage": "https://gridtracker.org/",
+  "license": "BSD-3-Clause",
+  "url": "https://download2.gridtracker.org/GridTracker2-2.261108.4-setup.exe#/dl.7z",
+  "hash": "5af4f89c94ac7563d61c84c66b95b13ff763513f52d8d7c5986234ef9ae0eac6",
+  "architecture": {
+    "64bit": {
+      "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
+    },
+    "32bit": {
+      "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\""
+    }
+  },
+  "post_install": "Get-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force",
+  "shortcuts": [
+    [
+      "GridTracker2.exe",
+      "GridTracker2",
+      "--disable-auto-updates"
+    ]
+  ],
+  "checkver": {
+    "url": "https://gridtracker.org/index.php/downloads/gridtracker-downloads",
+    "regex": "https://download2\\.gridtracker\\.org/GridTracker2-([\\d.]+)-setup\\.exe"
+  },
+  "autoupdate": {
+    "url": "https://download2.gridtracker.org/GridTracker2-$version-setup.exe#/dl.7z"
+  }
+}
