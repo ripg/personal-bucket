@@ -14,17 +14,7 @@
         }
     },
     "post_install": [
-        "Get-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force",
-        "@(",
-        "    '@echo off'",
-        "    'setlocal DisableDelayedExpansion'",
-        "    'set \"APP_PERSIST=%~dp0data\"'",
-        "    'set \"TEMP=%APP_PERSIST%\\temp\"'",
-        "    'set \"TMP=%TEMP%\"'",
-        "    'if not exist \"%TEMP%\\\" mkdir \"%TEMP%\" || exit /b 1'",
-        "    'if not exist \"%APP_PERSIST%\\profile\\\" mkdir \"%APP_PERSIST%\\profile\" || exit /b 1'",
-        "    'start \"\" /D \"%~dp0.\" \"%~dp0GridTracker2.exe\" --user-data-dir=\"%APP_PERSIST%\\profile\" --disk-cache-dir=\"%APP_PERSIST%\\cache\" --disable-auto-updates %*'",
-        ") | Set-Content -LiteralPath (Join-Path $dir 'launch.cmd') -Encoding Ascii"
+        "Get-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force"
     ],
     "shortcuts": [
         [
@@ -44,5 +34,19 @@
     "persist": "data",
     "notes": [
         "Use the Scoop shortcut to direct Electron user data, browser cache and temporary files to persist."
-    ]
+    ],
+    "installer": {
+        "script": [
+            "@(",
+            "    '@echo off'",
+            "    'setlocal DisableDelayedExpansion'",
+            "    'set \"APP_PERSIST=%~dp0data\"'",
+            "    'set \"TEMP=%APP_PERSIST%\\temp\"'",
+            "    'set \"TMP=%TEMP%\"'",
+            "    'if not exist \"%TEMP%\\\" mkdir \"%TEMP%\" || exit /b 1'",
+            "    'if not exist \"%APP_PERSIST%\\profile\\\" mkdir \"%APP_PERSIST%\\profile\" || exit /b 1'",
+            "    'start \"\" /D \"%~dp0.\" \"%~dp0GridTracker2.exe\" --user-data-dir=\"%APP_PERSIST%\\profile\" --disk-cache-dir=\"%APP_PERSIST%\\cache\" --disable-auto-updates %*'",
+            ") | Set-Content -LiteralPath (Join-Path $dir 'launch.cmd') -Encoding Ascii"
+        ]
+    }
 }
