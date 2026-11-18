@@ -1,29 +1,47 @@
 {
-  "version": "1.0.1",
-  "description": "Amateur radio digital modes desktop application.",
-  "homepage": "https://github.com/boybook/tx-5dr",
-  "checkver": {
-    "regex": "^v([\\d.]+)$",
-    "jsonpath": "$.tag_name",
-    "url": "https://api.github.com/repos/boybook/tx-5dr/releases/latest"
-  },
-  "autoupdate": {
+    "version": "1.0.1",
+    "description": "Amateur radio digital modes desktop application.",
+    "homepage": "https://github.com/boybook/tx-5dr",
+    "checkver": {
+        "regex": "^v([\\d.]+)$",
+        "jsonpath": "$.tag_name",
+        "url": "https://api.github.com/repos/boybook/tx-5dr/releases/latest"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/boybook/tx-5dr/releases/download/v$version/TX-5DR-v$version-windows-x64.zip"
+            }
+        }
+    },
     "architecture": {
-      "64bit": {
-        "url": "https://github.com/boybook/tx-5dr/releases/download/v$version/TX-5DR-v$version-windows-x64.zip"
-      }
-    }
-  },
-  "architecture": {
-    "64bit": {
-      "url": "https://github.com/boybook/tx-5dr/releases/download/v1.0.1/TX-5DR-v1.0.1-windows-x64.zip",
-      "hash": "849cf3f1b09489360a9a8c84710428bd38ba7c0a9b370c6aa54b6e9e7ac76fc9",
-      "shortcuts": [
+        "64bit": {
+            "url": "https://github.com/boybook/tx-5dr/releases/download/v1.0.1/TX-5DR-v1.0.1-windows-x64.zip",
+            "hash": "849cf3f1b09489360a9a8c84710428bd38ba7c0a9b370c6aa54b6e9e7ac76fc9"
+        }
+    },
+    "post_install": [
+        "@(",
+        "    '@echo off'",
+        "    'setlocal DisableDelayedExpansion'",
+        "    'set \"APP_PERSIST=%~dp0data\"'",
+        "    'set \"TEMP=%APP_PERSIST%\\temp\"'",
+        "    'set \"TMP=%TEMP%\"'",
+        "    'if not exist \"%TEMP%\\\" mkdir \"%TEMP%\" || exit /b 1'",
+        "    'if not exist \"%APP_PERSIST%\\profile\\\" mkdir \"%APP_PERSIST%\\profile\" || exit /b 1'",
+        "    'start \"\" /D \"%~dp0.\" \"%~dp0tx-5dr.exe\" --user-data-dir=\"%APP_PERSIST%\\profile\" --disk-cache-dir=\"%APP_PERSIST%\\cache\" %*'",
+        ") | Set-Content -LiteralPath (Join-Path $dir 'launch.cmd') -Encoding Ascii"
+    ],
+    "persist": "data",
+    "shortcuts": [
         [
-          "tx-5dr.exe",
-          "TX-5DR"
+            "launch.cmd",
+            "TX-5DR",
+            "",
+            "tx-5dr.exe"
         ]
-      ]
-    }
-  }
+    ],
+    "notes": [
+        "Use the Scoop shortcut to direct Electron user data, browser cache and temporary files to persist."
+    ]
 }
