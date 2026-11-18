@@ -1,0 +1,49 @@
+name: Update Scoop manifests
+
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scoop-manifest-update
+
+jobs:
+  update:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update manifests and push changes
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          $manifests = Join-Path $env:GITHUB_WORKSPACE 'bucket'
+          if (-not (Get-ChildItem -LiteralPath $manifests -Filter '*.json' -File)) {
+            Write-Host 'No manifests to update.'
+            exit 0
+          }
+
+          $scoop = Join-Path $env:RUNNER_TEMP 'scoop'
+          git clone --depth 1 https://github.com/ScoopInstaller/Scoop.git $scoop
+          if ($LASTEXITCODE -ne 0) { throw 'Failed to clone Scoop.' }
+
+          & (Join-Path $scoop 'bin/checkver.ps1') -Dir $manifests -Update -ThrowError
+
+          $changes = git status --porcelain -- bucket
+          if ($LASTEXITCODE -ne 0) { throw 'Failed to inspect manifest changes.' }
+          if (-not $changes) { exit 0 }
+
+          git add -- bucket
+          if ($LASTEXITCODE -ne 0) { throw 'Failed to stage manifests.' }
+
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Update Scoop manifests'
+          if ($LASTEXITCODE -ne 0) { throw 'Failed to commit manifest updates.' }
+
+          git push origin "HEAD:refs/heads/$env:GITHUB_REF_NAME"
