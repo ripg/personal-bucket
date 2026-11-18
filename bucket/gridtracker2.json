@@ -1,10 +1,10 @@
 {
-    "version": "2.261108.4",
+    "version": "2.261117.7",
     "description": "Amateur radio grid mapping and logging companion for WSJT-X and JTDX.",
     "homepage": "https://gridtracker.org/",
     "license": "BSD-3-Clause",
-    "url": "https://download2.gridtracker.org/GridTracker2-2.261108.4-setup.exe#/dl.7z",
-    "hash": "5af4f89c94ac7563d61c84c66b95b13ff763513f52d8d7c5986234ef9ae0eac6",
+    "url": "https://download2.gridtracker.org/GridTracker2-2.261117.7-setup.exe#/dl.7z",
+    "hash": "fc4e05660e0a05fbecf2116007d0e103dbe74bd45a5002d8f55623ace43cb261",
     "architecture": {
         "64bit": {
             "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-64.7z\" \"$dir\""
@@ -13,9 +13,7 @@
             "pre_install": "Expand-7zipArchive \"$dir\\`$PLUGINSDIR\\app-32.7z\" \"$dir\""
         }
     },
-    "post_install": [
-        "Get-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force"
-    ],
+    "post_install": "Get-Item \"$dir\\`$PLUGINSDIR\", \"$dir\\`$R0\" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force",
     "shortcuts": [
         [
             "launch.cmd",
@@ -32,9 +30,7 @@
         "url": "https://download2.gridtracker.org/GridTracker2-$version-setup.exe#/dl.7z"
     },
     "persist": "data",
-    "notes": [
-        "Use the Scoop shortcut to direct Electron user data, browser cache and temporary files to persist."
-    ],
+    "notes": "Use the Scoop shortcut to direct Electron user data, browser cache and temporary files to persist.",
     "installer": {
         "script": [
             "@(",
