@@ -1,44 +1,57 @@
 {
-  "version": "3.33",
-  "description": "Amateur radio application for FT8 and other digital modes.",
-  "homepage": "https://qft8.com/zh/",
-  "license": "Freeware",
-  "checkver": {
-    "url": "https://qft8.com/zh/",
-    "regex": "qFT8-v([\\d.]+)-windows-64bits\\.zip"
-  },
-  "autoupdate": {
-    "architecture": {
-      "32bit": {
-        "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v$version-windows-32bits.zip"
-      },
-      "64bit": {
-        "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v$version-windows-64bits.zip"
-      }
-    }
-  },
-  "architecture": {
-    "64bit": {
-      "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v3.33-windows-64bits.zip",
-      "hash": "e56409104a7bf43342e7e5ff20e4c8993d7bfa660aa4626ae5920cbfe99d9a3c",
-      "extract_dir": "qFT8",
-      "shortcuts": [
-        [
-          "qFT8.exe",
-          "qFT8"
-        ]
-      ]
+    "version": "3.33",
+    "description": "Amateur radio application for FT8 and other digital modes.",
+    "homepage": "https://qft8.com/zh/",
+    "license": "Freeware",
+    "checkver": {
+        "url": "https://qft8.com/zh/",
+        "regex": "qFT8-v([\\d.]+)-windows-64bits\\.zip"
     },
-    "32bit": {
-      "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v3.33-windows-32bits.zip",
-      "hash": "a759e254e6dfbe4e2a94890f23802be1a21893af28015753e147ce7e1d0b1c79",
-      "extract_dir": "qFT8",
-      "shortcuts": [
+    "autoupdate": {
+        "architecture": {
+            "32bit": {
+                "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v$version-windows-32bits.zip"
+            },
+            "64bit": {
+                "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v$version-windows-64bits.zip"
+            }
+        }
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v3.33-windows-64bits.zip",
+            "hash": "e56409104a7bf43342e7e5ff20e4c8993d7bfa660aa4626ae5920cbfe99d9a3c",
+            "extract_dir": "qFT8"
+        },
+        "32bit": {
+            "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v3.33-windows-32bits.zip",
+            "hash": "a759e254e6dfbe4e2a94890f23802be1a21893af28015753e147ce7e1d0b1c79",
+            "extract_dir": "qFT8"
+        }
+    },
+    "post_install": [
+        "@(",
+        "    '@echo off'",
+        "    'setlocal DisableDelayedExpansion'",
+        "    'set \"APP_PERSIST=%~dp0data\"'",
+        "    'set \"TEMP=%APP_PERSIST%\\temp\"'",
+        "    'set \"TMP=%TEMP%\"'",
+        "    'if not exist \"%TEMP%\\\" mkdir \"%TEMP%\" || exit /b 1'",
+        "    'if not exist \"%APP_PERSIST%\\profile\\\" mkdir \"%APP_PERSIST%\\profile\" || exit /b 1'",
+        "    'start \"\" /D \"%~dp0.\" \"%~dp0qFT8.exe\" --qft8_profile \"%APP_PERSIST%\\profile\" %*'",
+        ") | Set-Content -LiteralPath (Join-Path $dir 'launch.cmd') -Encoding Ascii"
+    ],
+    "persist": "data",
+    "shortcuts": [
         [
-          "qFT8.exe",
-          "qFT8"
+            "launch.cmd",
+            "qFT8",
+            "",
+            "qFT8.exe"
         ]
-      ]
-    }
-  }
+    ],
+    "notes": [
+        "Use the Scoop shortcut to store the qFT8 profile and temporary files under persist.",
+        "qFT8 can save SSTV and other images in Windows Pictures. Choose locations under persist when exporting files."
+    ]
 }
