@@ -97,3 +97,54 @@ if (-not (Test-Path -LiteralPath (Join-Path $bucket 'qft8.json'))) {
     }
     New-Manifest 'qft8' $manifest $targets $release '^qFT8\.exe$'
 }
+
+if (-not (Test-Path -LiteralPath (Join-Path $bucket 'gridtracker2.json'))) {
+    $source = 'https://gridtracker.org/index.php/downloads/gridtracker-downloads'
+    $regex = 'https://download2\.gridtracker\.org/GridTracker2-([\d.]+)-setup\.exe'
+    $page = Invoke-WebRequest -Uri $source
+    if ($page.Content -notmatch $regex) { throw 'Cannot find the GridTracker2 Windows installer.' }
+    $version = $Matches[1]
+    $download = $Matches[0]
+    $temp = New-Item -ItemType Directory -Path (Join-Path $env:RUNNER_TEMP "gridtracker2-$([guid]::NewGuid())")
+    try {
+        $installer = Join-Path $temp.FullName 'setup.exe'
+        Invoke-WebRequest -Uri $download -OutFile $installer
+        $hash = (Get-FileHash -LiteralPath $installer -Algorithm SHA256).Hash.ToLowerInvariant()
+        $sevenZip = Join-Path $env:ProgramFiles '7-Zip/7z.exe'
+        & $sevenZip x $installer "-o$($temp.FullName)" '-y' '$PLUGINSDIR\app-*.7z' | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw 'Could not extract the GridTracker2 installer.' }
+
+        $architecture = [ordered]@{}
+        $exeName = 'GridTracker2.exe'
+        foreach ($bits in '64', '32') {
+            $archiveName = "app-$bits.7z"
+            $payload = Join-Path $temp.FullName ('$PLUGINSDIR/' + $archiveName)
+            if (-not (Test-Path -LiteralPath $payload)) { continue }
+            $entries = & $sevenZip l -slt $payload
+            if ($LASTEXITCODE -ne 0 -or $entries -notcontains "Path = $exeName") {
+                throw "Could not find $exeName in $archiveName."
+            }
+            $architecture["$($bits)bit"] = @{
+                pre_install = ('Expand-7zipArchive "$dir\`$PLUGINSDIR\{0}" "$dir"' -f $archiveName)
+            }
+        }
+        if (-not $architecture['64bit']) { throw 'GridTracker2 installer lacks an x64 payload.' }
+
+        $manifest = [ordered]@{
+            version = $version
+            description = 'Amateur radio grid mapping and logging companion for WSJT-X and JTDX.'
+            homepage = 'https://gridtracker.org/'
+            license = 'BSD-3-Clause'
+            url = "$download#/dl.7z"
+            hash = $hash
+            architecture = $architecture
+            post_install = 'Get-Item "$dir\`$PLUGINSDIR", "$dir\`$R0" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force'
+            shortcuts = ,@($exeName, 'GridTracker2', '--disable-auto-updates')
+            checkver = @{ url = $source; regex = $regex }
+            autoupdate = @{ url = 'https://download2.gridtracker.org/GridTracker2-$version-setup.exe#/dl.7z' }
+        }
+        $manifest | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (Join-Path $bucket 'gridtracker2.json') -Encoding utf8
+    } finally {
+        Remove-Item -LiteralPath $temp.FullName -Recurse -Force
+    }
+}
