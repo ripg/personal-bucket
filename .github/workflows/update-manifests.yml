@@ -1,6 +1,11 @@
 name: Update Scoop manifests
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'bin/initialize-manifests.ps1'
+      - '.github/workflows/update-manifests.yml'
   schedule:
     - cron: '23 */6 * * *'
   workflow_dispatch:
@@ -24,6 +29,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
+          & (Join-Path $env:GITHUB_WORKSPACE 'bin/initialize-manifests.ps1')
+
           $manifests = Join-Path $env:GITHUB_WORKSPACE 'bucket'
           if (-not (Get-ChildItem -LiteralPath $manifests -Filter '*.json' -File)) {
             Write-Host 'No manifests to update.'
