@@ -1,0 +1,56 @@
+{
+    "version": "2.4.1",
+    "description": "A Baidu Netdisk client with a web interface and multi-threaded transfers.",
+    "homepage": "https://github.com/komorebiCarry/BaiduPCS-Rust",
+    "license": "Apache-2.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/komorebiCarry/BaiduPCS-Rust/releases/download/v2.4.1/BaiduPCS-Rust-v2.4.1-windows-x86_64.zip",
+            "hash": "5becb4fc1552f3d696724cd5daf6bb81cfbc6a0999c6da6fe13b75a5830fbb41"
+        }
+    },
+    "extract_dir": "BaiduPCS-Rust-v2.4.1-windows-x86_64",
+    "persist": "data",
+    "installer": {
+        "script": [
+            "@(",
+            "    '@echo off'",
+            "    'setlocal DisableDelayedExpansion'",
+            "    'set \"TEMP=%~dp0data\\temp\"'",
+            "    'set \"TMP=%TEMP%\"'",
+            "    'if not exist \"%TEMP%\\.\" mkdir \"%TEMP%\" || exit /b 1'",
+            "    'pushd \"%~dp0data\" || exit /b 1'",
+            "    '\"%~dp0baidu-netdisk-rust.exe\" %*'",
+            "    'set \"exit_code=%errorlevel%\"'",
+            "    'popd'",
+            "    'exit /b %exit_code%'",
+            ") | Set-Content -LiteralPath (Join-Path $dir 'launch.cmd') -Encoding Ascii"
+        ]
+    },
+    "bin": [
+        [
+            "launch.cmd",
+            "baidupcs-rust"
+        ]
+    ],
+    "shortcuts": [
+        [
+            "launch.cmd",
+            "BaiduPCS-Rust",
+            "",
+            "baidu-netdisk-rust.exe"
+        ]
+    ],
+    "notes": "Run baidupcs-rust, then open http://127.0.0.1:18888 in your browser. The launcher uses Scoop persist as the working directory for configuration, logs and default downloads.",
+    "checkver": {
+        "github": "https://github.com/komorebiCarry/BaiduPCS-Rust"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/komorebiCarry/BaiduPCS-Rust/releases/download/v$version/BaiduPCS-Rust-v$version-windows-x86_64.zip"
+            }
+        },
+        "extract_dir": "BaiduPCS-Rust-v$version-windows-x86_64"
+    }
+}
