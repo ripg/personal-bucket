@@ -1,0 +1,54 @@
+{
+    "version": "1.5.0",
+    "description": "A cross-platform desktop client for PikPak cloud storage.",
+    "homepage": "https://github.com/NihilDigit/piko",
+    "license": "AGPL-3.0-or-later",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/NihilDigit/piko/releases/download/v1.5.0/piko-windows-x64-1.5.0.7z",
+            "hash": "6ec1334461951fcf8ceec8d92883c5b8c33cf985faa7568a2837be45e700fd82"
+        },
+        "arm64": {
+            "url": "https://github.com/NihilDigit/piko/releases/download/v1.5.0/piko-windows-arm64-1.5.0.7z",
+            "hash": "ce1dda44560688f4b09af1478bc52b5d7e8b5bb2d0b87e29130a181a8fc9ddf6"
+        }
+    },
+    "extract_dir": "Piko",
+    "persist": "data",
+    "installer": {
+        "script": [
+            "@(",
+            "    '@echo off'",
+            "    'setlocal DisableDelayedExpansion'",
+            "    'set \"PIKO_DATA=%~dp0data\"'",
+            "    'set \"TEMP=%PIKO_DATA%\\temp\"'",
+            "    'set \"TMP=%TEMP%\"'",
+            "    'if not exist \"%TEMP%\\.\" mkdir \"%TEMP%\" || exit /b 1'",
+            "    'set JAVA_TOOL_OPTIONS=\"-Dpiko.home=%PIKO_DATA%\" \"-Duser.home=%PIKO_DATA%\" \"-Djava.io.tmpdir=%TEMP%\"'",
+            "    'start \"\" /D \"%~dp0.\" \"%~dp0Piko.exe\" %*'",
+            ") | Set-Content -LiteralPath (Join-Path $dir 'launch.cmd') -Encoding Ascii"
+        ]
+    },
+    "shortcuts": [
+        [
+            "launch.cmd",
+            "Piko",
+            "",
+            "Piko.exe"
+        ]
+    ],
+    "notes": "Launch Piko from the Scoop shortcut. Use Scoop to update Piko.",
+    "checkver": {
+        "github": "https://github.com/NihilDigit/piko"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/NihilDigit/piko/releases/download/v$version/piko-windows-x64-$version.7z"
+            },
+            "arm64": {
+                "url": "https://github.com/NihilDigit/piko/releases/download/v$version/piko-windows-arm64-$version.7z"
+            }
+        }
+    }
+}
