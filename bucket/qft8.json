@@ -1,5 +1,5 @@
 {
-    "version": "3.34",
+    "version": "3.35",
     "description": "Amateur radio application for FT8 and other digital modes.",
     "homepage": "https://qft8.com/zh/",
     "license": "Freeware",
@@ -19,13 +19,13 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v3.34-windows-64bits.zip",
-            "hash": "da5894b6d05a5d66ef8fdf18bf51ac85c9e579ee3bf5fcdc050cf0d8f1f70271",
+            "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v3.35-windows-64bits.zip",
+            "hash": "13ef654396602b8172091282a906639ffee92ef16f3a9608048c5763e5117851",
             "extract_dir": "qFT8"
         },
         "32bit": {
-            "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v3.34-windows-32bits.zip",
-            "hash": "4f65fd32ab1cebc827679355f8b17c89ab90298bdc71267fd2d83b00531cca6a",
+            "url": "https://github.com/lquesada/qFT8/releases/download/main/qFT8-v3.35-windows-32bits.zip",
+            "hash": "b447ee7c1d2aec10bc52f6da1fd791615437a73a95490b6f4ddbe71e5fbef553",
             "extract_dir": "qFT8"
         }
     },
