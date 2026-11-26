@@ -1,15 +1,15 @@
 {
-    "version": "2.4.1",
+    "version": "2.4.2",
     "description": "A Baidu Netdisk client with a web interface and multi-threaded transfers.",
     "homepage": "https://github.com/komorebiCarry/BaiduPCS-Rust",
     "license": "Apache-2.0",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/komorebiCarry/BaiduPCS-Rust/releases/download/v2.4.1/BaiduPCS-Rust-v2.4.1-windows-x86_64.zip",
-            "hash": "5becb4fc1552f3d696724cd5daf6bb81cfbc6a0999c6da6fe13b75a5830fbb41"
+            "url": "https://github.com/komorebiCarry/BaiduPCS-Rust/releases/download/v2.4.2/BaiduPCS-Rust-v2.4.2-windows-x86_64.zip",
+            "hash": "6d6f102cd0a1c65d89dbba4a55d42322bcab2154e393761164bc49bf4bbf1f68"
         }
     },
-    "extract_dir": "BaiduPCS-Rust-v2.4.1-windows-x86_64",
+    "extract_dir": "BaiduPCS-Rust-v2.4.2-windows-x86_64",
     "persist": "data",
     "installer": {
         "script": [
